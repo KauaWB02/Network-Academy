@@ -1,8 +1,16 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { companieDto } from './dtos/companie.dto';
 import { CompanyInterface } from './interfaces/company.interface';
 import { CompaniesService } from './companies.service';
-import { CompanyIdExistPipe } from "./pipe/id-exist.pipe";
+import { CompanyIdExistPipe } from './pipe/id-exist.pipe';
 
 @Controller('companies')
 export class CompaniesController {
@@ -14,8 +22,10 @@ export class CompaniesController {
   }
 
   @Get(':idCompany')
-  async findOne(@Param('idCompany', ParseIntPipe) idCompany: number): Promise<CompanyInterface> {
-    return this.service.findOne(idCompany)
+  async findOne(
+    @Param('idCompany', ParseIntPipe) idCompany: number,
+  ): Promise<CompanyInterface> {
+    return this.service.findOne(idCompany);
   }
 
   @Post()
@@ -24,7 +34,12 @@ export class CompaniesController {
   }
 
   @Put(':idCompany')
-  async update(@Param('idCompany', ParseIntPipe, CompanyIdExistPipe) idCompany: number,  @Body() body: companieDto): Promise<CompanyInterface>{
+  async update(
+    @Param('idCompany', ParseIntPipe, CompanyIdExistPipe) idCompany: number,
+    @Body() body: companieDto,
+  ): Promise<CompanyInterface> {
+    const a = 'a';
+    console.log(a);
     return this.service.update(idCompany, body);
   }
 }
