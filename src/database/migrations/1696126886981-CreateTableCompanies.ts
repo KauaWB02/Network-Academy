@@ -31,20 +31,34 @@ export class CreateTableCompanies1696126886981 implements MigrationInterface {
         name: 'description',
         type: 'text',
       },
-      // {
-      //   name: 'uf',
-      //   type: 'enum',
-      //   enum: Object.values(UfEnum),
-      // },
+      {
+        name: 'uf',
+        type: 'enum',
+        enum: Object.values(UfEnum),
+      },
+      {
+        name: 'city',
+        type: 'varchar',
+        length: '255',
+      },
+      {
+        name: 'neighborhood',
+        type: 'varchar',
+        length: '255',
+      },
+      {
+        name: 'street',
+        type: 'varchar',
+        length: '255',
+      },
+      {
+        name: 'complement',
+        type: 'varchar',
+        length: '255',
+      },
       {
         name: 'logo_id',
         type: 'integer',
-        isNullable: true,
-      },
-      {
-        name: 'site',
-        type: 'varchar',
-        length: '255',
         isNullable: true,
       },
       {

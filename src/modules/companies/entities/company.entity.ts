@@ -26,14 +26,23 @@ export class CompanyEntity {
   @Column()
   description: string;
 
-  // @Column({
-  //   type: 'enum',
-  //   enum: UfEnum,
-  // })
-  // uf: string;
+  @Column({
+    type: 'enum',
+    enum: UfEnum,
+  })
+  uf: string;
 
   @Column()
-  site: string;
+  city: string;
+
+  @Column()
+  neighborhood: string;
+
+  @Column()
+  street: string;
+
+  @Column()
+  complement: string;
 
   @Column({ name: 'logo_id' })
   logoId?: number;

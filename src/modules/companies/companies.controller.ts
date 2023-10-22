@@ -1,16 +1,20 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
   Post,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { companieDto } from './dtos/companie.dto';
 import { CompanyInterface } from './interfaces/company.interface';
 import { CompaniesService } from './companies.service';
 import { CompanyIdExistPipe } from './pipe/id-exist.pipe';
+import { StripContextPipe } from '../../shared/interceptors/values-request';
+import { ContextInterceptor } from '../../shared/interceptors/values-request-body-params';
 
 @Controller('companies')
 export class CompaniesController {
@@ -29,17 +33,25 @@ export class CompaniesController {
   }
 
   @Post()
-  async create(@Body() body: companieDto): Promise<CompanyInterface> {
+  async create(
+    @Body() body: companieDto,
+  ): Promise<{ data: CompanyInterface; message: string }> {
     return this.service.create(body);
   }
 
-  @Put(':idCompany')
+  @Put(':companyId')
+  @UseInterceptors(ContextInterceptor)
   async update(
-    @Param('idCompany', ParseIntPipe, CompanyIdExistPipe) idCompany: number,
-    @Body() body: companieDto,
-  ): Promise<CompanyInterface> {
-    const a = 'a';
-    console.log(a);
-    return this.service.update(idCompany, body);
+    @Param('companyId', ParseIntPipe, CompanyIdExistPipe) companyId: number,
+    @Body(StripContextPipe) body: companieDto,
+  ): Promise<{ data: CompanyInterface; message: string }> {
+    return this.service.update(companyId, body);
+  }
+
+  @Delete(':companyId')
+  async delete(
+    @Param('companyId', ParseIntPipe, CompanyIdExistPipe) companyId: number,
+  ): Promise<{ message: string }> {
+    return this.service.delete(companyId);
   }
 }

@@ -12,9 +12,7 @@ import { CompaniesService } from '../companies.service';
 @ValidatorConstraint()
 export class CnpjValid implements ValidatorConstraintInterface {
   validate(text: string): boolean {
-    if (text.length === 11) {
-      return this.validaCPf(text);
-    } else if (text.length === 14) {
+    if (text.length === 14) {
       return this.validaCNPJ(text);
     }
     return false;

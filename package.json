@@ -1,5 +1,5 @@
 {
-  "name": "restruturacao-my-box",
+  "name": "network-academy",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -22,7 +22,7 @@
     "migration:create": "cd src/database/migrations && npx typeorm-ts-node-commonjs migration:create",
     "migration:run": "npm run build && npx typeorm -d ./build/config/database/data-source.js migration:run && npm run seed:run",
     "migration:revert": "typeorm migration:revert -d ./build/config/database/data-source.js && npm run migration:run",
-    "seed:run": "npm run build && npx typeorm-extension seed:run -d ./build/config/database/data-source.js"
+    "seed:run": "npx typeorm-extension seed -d ./build/config/database/data-source.js"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -37,7 +37,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "typeorm": "0.3.16",
-    "typeorm-extension": "^3.0.2"
+    "typeorm-extension": "^2.2.8"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

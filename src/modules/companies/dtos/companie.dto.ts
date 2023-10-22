@@ -1,20 +1,20 @@
 import {
+  Allow,
   IsDefined,
-  IsEmail, IsInt,
+  IsEmail,
+  IsEnum,
+  IsInt,
   IsNotEmpty,
-  IsObject,
   IsOptional,
   IsString,
   Length,
   Validate,
-  ValidateNested
-} from "class-validator";
-import { AddressDto } from './address.dto';
-import { Transform, TransformFnParams, Type } from 'class-transformer';
+} from 'class-validator';
+import { Transform, TransformFnParams } from 'class-transformer';
 import { EmailAlreadyExist } from '../validate/email-already-exist.constraint';
 import { CnpjValid } from '../validate/cnpj-valid.constraint';
-export class companieDto{
-
+import { UfEnum } from '../../../shared/enums/uf.enum';
+export class companieDto {
   @Transform(({ value }: TransformFnParams) => value?.trim())
   @IsString({ message: 'Campo NOME da empresa precisa ser string' })
   @IsNotEmpty({ message: 'Compo NOME é obrigatório ' })
@@ -27,7 +27,7 @@ export class companieDto{
   @IsNotEmpty({ message: 'O campo E-MAIL é obrigatório. ' })
   email: string;
 
-  @Validate(CnpjValid, { message: 'Campo precisa ser CNPJ ou CPF valido' })
+  @Validate(CnpjValid, { message: 'Campo precisa ser CNPJ' })
   @Length(11, 15, { message: 'Campo precisa de 11 ou 15 caracteres' })
   @IsString({ message: 'Campo CNPJ/CPF precisa ser string' })
   @IsNotEmpty({ message: 'Campo CNPJ/CPF é obrigatório' })
@@ -39,23 +39,34 @@ export class companieDto{
   @IsNotEmpty({ message: 'Campo DESCRIÇÃO é obrigatório' })
   description: string;
 
-  @Transform(({ value }: TransformFnParams) => value?.trim())
-  @IsString({ message: 'Compo SITE precisa ser string' })
-  @IsNotEmpty({ message: 'Campo SITE é obrigatório' })
-  @IsOptional()
-  site: string;
+  @IsNotEmpty({ message: 'O campo UF é obrigatório. ' })
+  @IsEnum(UfEnum, {
+    message: 'UF inválido.',
+  })
+  uf: string;
 
-  /*
-   *
-   * Ver como vai ser isso aqui;
-   *
-   */
+  @IsNotEmpty({ message: 'O campo UF é obrigatório. ' })
+  @IsString({ message: 'O campo CIDADE precisa ser string.' })
+  city: string;
+
+  @IsNotEmpty({ message: 'O campo BAIRRO é obrigatório. ' })
+  @IsString({ message: 'O campo BAIRRO precisa ser string.' })
+  neighborhood: string;
+
+  @IsNotEmpty({ message: 'O campo RUA é obrigatório. ' })
+  @IsString({ message: 'O campo RUA precisa ser string.' })
+  street: string;
+
+  @IsString({ message: 'O campo COMPLEMENTO precisa ser string.' })
+  @IsOptional()
+  complement: string;
+
+  @IsInt({ message: 'Campo logoId precisa ser um numero' })
+  @IsOptional()
   logoId?: number;
 
-  @Type(() => AddressDto)
-  @ValidateNested({ each: true })
-  @IsObject({ message: 'Campos de ENDEREÇO precisa ser um objeto' })
-  @IsNotEmpty({ message: 'Campo ENDEREÇO é obrigatório' })
-  @IsOptional()
-  address?: AddressDto;
+  @Allow()
+  context?: {
+    params: { id?: number };
+  };
 }

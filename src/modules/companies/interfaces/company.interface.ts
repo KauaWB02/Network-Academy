@@ -1,13 +1,15 @@
-import { AddressInterface } from './address.interface';
-
 export interface CompanyInterface {
+  id?: number;
   name: string;
   email: string;
   cnpj: string;
   description: string;
-  site: string;
+  uf: string;
+  city: string;
+  neighborhood: string;
+  street: string;
+  complement: string;
   logoId?: number;
-  address?: AddressInterface;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date;

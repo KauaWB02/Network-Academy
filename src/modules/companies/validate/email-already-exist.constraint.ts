@@ -25,9 +25,14 @@ export class EmailAlreadyExist
     email: string,
     validationArguments: ValidationArguments,
   ): Promise<boolean> {
-      console.log('Passou aqui no email')
+    const body = Object.assign(validationArguments.object);
 
-    const entity = await service.findByEmail(email);
+    console.log(body.context);
+
+    const entity = await service.findByEmail(
+      email,
+      body?.context.params.companyId,
+    );
     return !entity;
   }
 }
