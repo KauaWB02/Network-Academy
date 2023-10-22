@@ -25,11 +25,11 @@ export class CompaniesController {
     return this.service.findAll();
   }
 
-  @Get(':companyId')
+  @Get(':idCompany')
   async findOne(
-    @Param('companyId', ParseIntPipe) companyId: number,
+    @Param('idCompany', ParseIntPipe) idCompany: number,
   ): Promise<CompanyInterface> {
-    return this.service.findOne(companyId);
+    return this.service.findOne(idCompany);
   }
 
   @Post()
