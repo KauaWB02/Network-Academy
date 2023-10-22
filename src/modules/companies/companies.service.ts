@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CompanyEntity } from './entities/company.entity';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { CompanyInterface } from './interfaces/company.interface';
 import { companieDto } from './dtos/companie.dto';
 
@@ -25,12 +25,18 @@ export class CompaniesService {
     }
   }
 
-  async findByEmail(email: string): Promise<CompanyInterface> {
+  async findByEmail(
+    email: string,
+    companyId: number,
+  ): Promise<CompanyInterface> {
     try {
-      const company = await this.companyRepository.findOneBy({ email });
+      const company = await this.companyRepository.findOneBy({
+        email,
+        id: Not(companyId),
+      });
       return company;
     } catch (Error) {
-      console.log(Error)
+      console.log(Error);
       throw new HttpException(
         {
           message: `Não foi possível obter a empresa relacionada com o e-mail: ${email}`,
@@ -39,12 +45,13 @@ export class CompaniesService {
       );
     }
   }
-  async findOne(id: number): Promise<CompanyInterface>{
-    try {
-      const company = await this.companyRepository.findOne({where: {id}});
 
-      return  company;
-    }catch (Error) {
+  async findOne(id: number): Promise<CompanyInterface> {
+    try {
+      const company = await this.companyRepository.findOne({ where: { id } });
+
+      return company;
+    } catch (Error) {
       throw new HttpException(
         {
           message: 'Não foi possível buscar empresa',
@@ -54,15 +61,15 @@ export class CompaniesService {
     }
   }
 
-  async create(body: companieDto): Promise<CompanyInterface> {
+  async create(
+    body: companieDto,
+  ): Promise<{ data: CompanyInterface; message: string }> {
     try {
-      const { address, logoId, ...companyBody } = body;
-
-      const companyEntity = Object.assign(new CompanyEntity(), companyBody);
+      const companyEntity = Object.assign(new CompanyEntity(), { ...body });
 
       await this.companyRepository.save(companyEntity);
 
-      return companyEntity;
+      return { data: companyEntity, message: 'Empresa criada com sucesso.' };
     } catch (Error) {
       throw new HttpException(
         {
@@ -73,15 +80,22 @@ export class CompaniesService {
     }
   }
 
-  async  update(idCompany: number, body: companieDto): Promise<CompanyInterface>{
+  async update(
+    idCompany: number,
+    body: companieDto,
+  ): Promise<{ data: CompanyInterface; message: string }> {
     try {
-      const { address, logoId, ...companyBody } = body;
-
-      const companyEntity = Object.assign(new CompanyEntity(), { id: idCompany ,...companyBody });
+      const companyEntity = Object.assign(new CompanyEntity(), {
+        ...body,
+        id: idCompany,
+      });
 
       await this.companyRepository.save(companyEntity);
 
-      return companyEntity;
+      return {
+        data: companyEntity,
+        message: 'Empresa atualizada com sucesso!',
+      };
     } catch (Error) {
       throw new HttpException(
         {
@@ -92,4 +106,19 @@ export class CompaniesService {
     }
   }
 
+  async delete(companyId: number): Promise<{ message: string }> {
+    try {
+      await this.companyRepository.softDelete({ id: companyId });
+      return {
+        message: 'Empresa excluida com sucesso.',
+      };
+    } catch (Error) {
+      throw new HttpException(
+        {
+          message: 'Não foi possível excluir a empresa',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

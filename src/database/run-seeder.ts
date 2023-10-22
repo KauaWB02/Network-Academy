@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import { Seeder, runSeeders } from 'typeorm-extension';
-import { CompanieSeed } from "./seeds/companie.seed";
+import { CompanieSeed } from './seeds/companie.seed';
 
 export class MainSeeder implements Seeder {
   public async run(dataSource: DataSource): Promise<any> {

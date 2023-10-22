@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { entities } from './database-entities.provider';
+import { MainSeeder } from '../../database/run-seeder';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { entities } from './database-entities.provider';
           migrationsDir: __dirname + 'src/database/migrations',
         },
         synchronize: false,
+        seeds: [MainSeeder],
       }),
     }),
   ],

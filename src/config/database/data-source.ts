@@ -1,13 +1,13 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
 
 import * as path from 'path';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { SeederOptions } from 'typeorm-extension';
-import { MainSeeder } from "../../database/run-seeder";
-import { entities } from "../../providers/dataBase/database-entities.provider";
-
+import { MainSeeder } from '../../database/run-seeder';
+import { entities } from '../../providers/dataBase/database-entities.provider';
 
 export const ormOptions: DataSourceOptions & SeederOptions = {
   type: process.env.DB_TYPE as any,
